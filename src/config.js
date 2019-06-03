@@ -5,7 +5,7 @@ export const START_MONTH = 0;
 export const START_YEAR = '2018';
 
 // The number of months the timeline spans.
-export const MONTH_SPAN = 3;
+export const MONTH_SPAN = 12;
 
 // The number of rows in the grid.
 export const GRID_NUM_ROWS = 12;
