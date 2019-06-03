@@ -8,15 +8,29 @@ const Cell = styled.div`
     background-color: #3498db;
     color: white;
     border-radius: 10px;
-    padding: 10px;
+    padding: 20px;
     display: flex;
     align-items: center;
+    overflow: hidden;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+`;
+
+const NameWrapper = styled.p`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 `;
 
 function TimelineEvent(props) {
     return (
         <Cell colStart={props.colStart} colSpan={props.colSpan} row={props.row}>
-            {props.name}
+            <NameWrapper>{props.name}</NameWrapper>
         </Cell>
     );
 }
