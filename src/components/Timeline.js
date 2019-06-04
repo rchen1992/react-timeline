@@ -8,7 +8,7 @@ import { GRID_LINE_SPAN, GRID_NUM_ROWS } from '../config';
 const Grid = styled.div`
     display: grid;
     width: ${props => `${props.monthSpan * 100}%`};
-    height: 100vh;
+    height: ${({ theme }) => `calc(100vh - ${theme.headerHeight}px)`};
     overflow-x: scroll;
     grid-template-columns: ${props => `repeat(${props.numCols}, 1fr);`};
     grid-template-rows: ${props => `repeat(${props.numRows}, 1fr);`};
