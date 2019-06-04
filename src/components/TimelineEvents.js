@@ -1,5 +1,5 @@
 import React from 'react';
-import { prepareEvents } from './util';
+import { prepareEvents } from '../util';
 import TimelineEvent from './TimelineEvent';
 
 function TimelineEvents(props) {

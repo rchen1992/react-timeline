@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { GRID_DATE_DISPLAY_FORMAT } from './config';
+import { GRID_DATE_DISPLAY_FORMAT } from '../config';
 
 const Line = styled.div`
     border-right: 1px solid #dfdfdf;

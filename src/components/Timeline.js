@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import TimelineEvents from './TimelineEvents';
 import GridLines from './GridLines';
-import { getNumberOfDaysInMonths } from './util';
-import { GRID_LINE_SPAN, GRID_NUM_ROWS } from './config';
+import { getNumberOfDaysInMonths } from '../util';
+import { GRID_LINE_SPAN, GRID_NUM_ROWS } from '../config';
 
 const Grid = styled.div`
     display: grid;
@@ -14,6 +14,7 @@ const Grid = styled.div`
     grid-template-rows: ${props => `repeat(${props.numRows}, 1fr);`};
     grid-row-gap: 10px;
     padding: 10px;
+    border-top: 1px solid #dfdfdf;
 `;
 
 function Timeline(props) {

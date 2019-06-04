@@ -25,6 +25,7 @@ const NameWrapper = styled.p`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    margin: 0;
 `;
 
 function TimelineEvent(props) {
