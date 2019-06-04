@@ -9,6 +9,9 @@ const InnerContainer = styled.div`
     height: ${({ theme }) => theme.headerHeight}px;
     width: 100%;
     position: fixed;
+    display: flex;
+    align-items: center;
+    padding: 10px;
 `;
 
 function Header(props) {

@@ -1,11 +1,11 @@
 import React from 'react';
 import Header from './Header';
+import { DatePicker } from 'antd';
 
 function AppControls(props) {
     return (
         <Header>
-            <div>Hello world</div>
-            <div>foo bar</div>
+            <DatePicker placeholder="Jump to date" />
         </Header>
     );
 }
