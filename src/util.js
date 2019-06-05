@@ -98,8 +98,8 @@ function getEventsWithRowPositions(sortedEvents) {
  * should be placed on.
  * @param sortedEvents - events sorted by start date ASC
  */
-function getEventsWithColPositions(sortedEvents, startMonth, startYear) {
-    const startDate = moment(startMonth + 1, 'MM').year(startYear);
+function getEventsWithColPositions(sortedEvents, startMonth, year) {
+    const startDate = moment(startMonth + 1, 'MM').year(year);
     return sortedEvents.map(event => {
         return {
             ...event,
@@ -114,18 +114,26 @@ function getEventsWithColPositions(sortedEvents, startMonth, startYear) {
  * @param sortedEvents - events sorted by start date ASC
  * @param startMonth - month to start on
  */
-function getEventsWithGridPositions(sortedEvents, startMonth, startYear) {
+function getEventsWithGridPositions(sortedEvents, startMonth, year) {
     const withRows = getEventsWithRowPositions(sortedEvents);
-    return getEventsWithColPositions(withRows, startMonth, startYear);
+    return getEventsWithColPositions(withRows, startMonth, year);
+}
+
+/**
+ * Returns events whose start date is in the target year.
+ */
+function getEventsInTargetYear(events, year) {
+    return events.filter(event => event.startObj.year() === year);
 }
 
 /**
  * Prepares events for timeline.
  */
-export function prepareEvents(events, startMonth, startYear) {
+export function prepareEvents(events, startMonth, year) {
     const eventsWithDateObjects = getEventsWithDateObjects(events);
-    const sortedEvents = sortEventsByStartDate(eventsWithDateObjects);
-    return getEventsWithGridPositions(sortedEvents, startMonth, startYear);
+    const eventsInYear = getEventsInTargetYear(eventsWithDateObjects, year);
+    const sortedEvents = sortEventsByStartDate(eventsInYear);
+    return getEventsWithGridPositions(sortedEvents, startMonth, year);
 }
 
 /**

@@ -22,11 +22,7 @@ function Timeline(props) {
 
     return (
         <Grid numCols={numCols} numRows={GRID_NUM_ROWS} monthSpan={props.monthSpan}>
-            <TimelineEvents
-                events={props.events}
-                startMonth={props.startMonth}
-                startYear={props.startYear}
-            />
+            <TimelineEvents events={props.events} startMonth={props.startMonth} />
             <GridLines
                 numCols={numCols}
                 numRows={GRID_NUM_ROWS}

@@ -4,22 +4,18 @@ import { ThemeProvider } from 'styled-components';
 import timelineItems from './timelineItems';
 import Timeline from 'components/Timeline';
 import AppControls from 'components/AppControls';
-import { START_MONTH, START_YEAR, MONTH_SPAN } from './config';
+import { START_MONTH, MONTH_SPAN } from './config';
 import theme from 'style/theme';
+import { StateProvider } from 'store';
 import 'style/index.css';
 import 'antd/dist/antd.css';
 
 const App = () => (
     <ThemeProvider theme={theme}>
-        <>
+        <StateProvider>
             <AppControls />
-            <Timeline
-                events={timelineItems}
-                startMonth={START_MONTH}
-                startYear={START_YEAR}
-                monthSpan={MONTH_SPAN}
-            />
-        </>
+            <Timeline events={timelineItems} startMonth={START_MONTH} monthSpan={MONTH_SPAN} />
+        </StateProvider>
     </ThemeProvider>
 );
 
