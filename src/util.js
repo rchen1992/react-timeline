@@ -149,3 +149,17 @@ export function getNumberOfDaysInMonths(startMonth, monthSpan) {
     }
     return days;
 }
+
+/**
+ * Gets the scrollLeft position for a given day on the timeline.
+ */
+export function getJumpToDateScrollPosition(day, containerWidth) {
+    // Get percentage of container to scroll.
+    const percentage = day / 365;
+
+    // Calculate the number of pixels to scroll based on percentage of container.
+    const scrollLeft = containerWidth * percentage;
+
+    // Subtract half the window width to center on the current day.
+    return scrollLeft - window.innerWidth / 2;
+}

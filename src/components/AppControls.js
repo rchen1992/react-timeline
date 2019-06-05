@@ -4,10 +4,11 @@ import { DatePicker } from 'antd';
 import { StateContext } from 'store';
 
 function AppControls(props) {
-    const { setYear } = React.useContext(StateContext);
+    const { setYear, setSelectedDay } = React.useContext(StateContext);
     function onDateChange(date) {
         if (date) {
             setYear(date.year());
+            setSelectedDay(date.dayOfYear());
         }
     }
 
