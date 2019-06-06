@@ -1,9 +1,6 @@
 // The month that the timeline starts at.
 export const START_MONTH = 0;
 
-// The year that the timeline starts at.
-export const START_YEAR = '2018';
-
 // The number of months the timeline spans.
 export const MONTH_SPAN = 12;
 
