@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
+import NewEventTrigger from './NewEventTrigger';
 import { Button, DatePicker } from 'antd';
 import { StateContext } from 'store';
 
@@ -32,9 +33,7 @@ function AppControls(props) {
                     <Year>{year}</Year>
                     <DatePicker placeholder="Jump to date" onChange={onDateChange} />
                 </div>
-                <Button type="primary" icon="plus">
-                    New Event
-                </Button>
+                <NewEventTrigger />
             </Container>
         </Header>
     );
