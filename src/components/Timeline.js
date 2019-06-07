@@ -56,7 +56,7 @@ function Timeline(props) {
                 numRows={GRID_NUM_ROWS}
                 monthSpan={props.monthSpan}
             >
-                <TimelineEvents events={props.events} startMonth={props.startMonth} />
+                <TimelineEvents startMonth={props.startMonth} />
                 <GridLines
                     numCols={numCols}
                     numRows={GRID_NUM_ROWS}

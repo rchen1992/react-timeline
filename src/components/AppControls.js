@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 import NewEventTrigger from './NewEventTrigger';
-import { Button, DatePicker } from 'antd';
+import { DatePicker } from 'antd';
 import { StateContext } from 'store';
 
 const Year = styled.span`

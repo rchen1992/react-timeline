@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Modal, Input, DatePicker } from 'antd';
 import { CirclePicker } from 'react-color';
+import { EVENT_DATE_FORMAT } from 'config';
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -65,11 +66,22 @@ function NewEventModal(props) {
         props.onClose();
     }
 
+    function onSubmit() {
+        props.onSubmit({
+            color,
+            name,
+            start: startDate.format(EVENT_DATE_FORMAT),
+            end: endDate.format(EVENT_DATE_FORMAT),
+        });
+
+        onClose();
+    }
+
     return (
         <Modal
             title="New Event"
             visible={props.open}
-            onOk={onClose}
+            onOk={onSubmit}
             onCancel={onClose}
             okText="Submit"
         >
@@ -79,7 +91,6 @@ function NewEventModal(props) {
             </Field>
             <Field>
                 <Label>Event Dates:</Label>
-                {startDate && startDate.format('YYYY-MM-DD')}
                 <RangePicker
                     style={{ width: '100%' }}
                     onChange={onDateChange}
