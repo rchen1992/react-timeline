@@ -1,21 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal, Input, DatePicker } from 'antd';
+import { Modal, Input, DatePicker, Form } from 'antd';
 import { CirclePicker } from 'react-color';
 import { EVENT_DATE_FORMAT } from 'config';
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-
-const Label = styled.label`
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-`;
-
-const Field = styled.div`
-    margin-bottom: 22px;
-`;
 
 const colors = [
     '#f44336',
@@ -43,6 +33,7 @@ function NewEventModal(props) {
     const [name, setName] = React.useState('');
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
+    const [submitted, setSubmitted] = React.useState(false);
 
     function onColorChange(color) {
         setColor(color.hex);
@@ -62,11 +53,18 @@ function NewEventModal(props) {
         setName('');
         setStartDate(null);
         setEndDate(null);
+        setSubmitted(false);
 
         props.onClose();
     }
 
     function onSubmit() {
+        setSubmitted(true);
+
+        if (!name || !startDate || !endDate) {
+            return;
+        }
+
         props.onSubmit({
             color,
             name,
@@ -85,22 +83,29 @@ function NewEventModal(props) {
             onCancel={onClose}
             okText="Submit"
         >
-            <Field>
-                <Label htmlFor="event-name-input">Event Name:</Label>
-                <TextArea id="event-name-input" rows={2} value={name} onChange={onNameChange} />
-            </Field>
-            <Field>
-                <Label>Event Dates:</Label>
-                <RangePicker
-                    style={{ width: '100%' }}
-                    onChange={onDateChange}
-                    value={[startDate, endDate]}
-                />
-            </Field>
-            <Field>
-                <Label>Event Color:</Label>
-                <CirclePicker width="100%" color={color} colors={colors} onChange={onColorChange} />
-            </Field>
+            <Form>
+                <Form.Item label="Event Name" validateStatus={submitted && !name ? 'error' : null}>
+                    <TextArea id="event-name-input" rows={2} value={name} onChange={onNameChange} />
+                </Form.Item>
+                <Form.Item
+                    label="Event Dates"
+                    validateStatus={submitted && (!startDate || !endDate) ? 'error' : null}
+                >
+                    <RangePicker
+                        style={{ width: '100%' }}
+                        onChange={onDateChange}
+                        value={[startDate, endDate]}
+                    />
+                </Form.Item>
+                <Form.Item label="Event Color">
+                    <CirclePicker
+                        width="100%"
+                        color={color}
+                        colors={colors}
+                        onChange={onColorChange}
+                    />
+                </Form.Item>
+            </Form>
         </Modal>
     );
 }
