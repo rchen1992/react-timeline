@@ -5,7 +5,7 @@ const Cell = styled.div`
     grid-column-start: ${props => props.colStart};
     grid-column-end: ${props => `span ${props.colSpan}`};
     grid-row-start: ${props => props.row};
-    background-color: #3498db;
+    background-color: ${props => props.eventColor};
     color: white;
     border-radius: 10px;
     padding: 20px;
@@ -30,7 +30,12 @@ const NameWrapper = styled.p`
 
 function TimelineEvent(props) {
     return (
-        <Cell colStart={props.colStart} colSpan={props.colSpan} row={props.row}>
+        <Cell
+            colStart={props.colStart}
+            colSpan={props.colSpan}
+            row={props.row}
+            eventColor={props.color}
+        >
             <NameWrapper>{props.name}</NameWrapper>
         </Cell>
     );
