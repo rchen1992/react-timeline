@@ -5,18 +5,32 @@ import defaultState from './defaultState';
 function StateProvider(props) {
     const [year, setYear] = React.useState(defaultState.year);
     const [selectedDay, setSelectedDay] = React.useState(defaultState.selectedDay);
-    const [events, setEvents] = React.useState(defaultState.events);
+    const [sortedEvents, setSortedEvents] = React.useState(defaultState.sortedEvents);
     const [nextEventId, setNextEventId] = React.useState(defaultState.nextEventId);
 
-    function onAddEvent(event) {
-        setEvents(events => [
-            ...events,
+    function onAddEvent(newEvent) {
+        /**
+         * Find where to insert the new event into
+         * the sorted array of events.
+         */
+        let newEventIndex = sortedEvents.findIndex(event =>
+            newEvent.startObj.isBefore(event.startObj)
+        );
+        if (newEventIndex === -1) {
+            newEventIndex = sortedEvents.length;
+        }
+
+        // Insert
+        setSortedEvents(events => [
+            ...sortedEvents.slice(0, newEventIndex),
             {
-                ...event,
+                ...newEvent,
                 id: nextEventId,
             },
+            ...sortedEvents.slice(newEventIndex),
         ]);
 
+        // Increment next event ID
         setNextEventId(id => id + 1);
     }
 
@@ -25,7 +39,7 @@ function StateProvider(props) {
         setYear,
         selectedDay,
         setSelectedDay,
-        events,
+        sortedEvents,
         onAddEvent,
     };
 

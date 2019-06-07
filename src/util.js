@@ -4,7 +4,7 @@ import { EVENT_DATE_FORMAT } from './config';
 /**
  * Wraps start and end dates with moment.
  */
-function getEventsWithDateObjects(events) {
+export function getEventsWithDateObjects(events) {
     return events.map(event => {
         return {
             ...event,
@@ -71,6 +71,8 @@ function getEventsWithRowPositions(sortedEvents) {
                 rowCount = 1;
                 for (let i = 0; i < lastRowEvents.length; i++) {
                     const lastRowEvent = lastRowEvents[i];
+                    console.log('event', event);
+                    console.log('lastRowEvent', lastRowEvent);
                     if (lastRowEvent && lastRowEvent.endObj.unix() > event.startObj.unix()) {
                         rowCount++;
                     } else {
@@ -130,10 +132,8 @@ function getEventsInTargetYear(events, year) {
  * Prepares events for timeline.
  */
 export function prepareEvents(events, startMonth, year) {
-    const eventsWithDateObjects = getEventsWithDateObjects(events);
-    const eventsInYear = getEventsInTargetYear(eventsWithDateObjects, year);
-    const sortedEvents = sortEventsByStartDate(eventsInYear);
-    return getEventsWithGridPositions(sortedEvents, startMonth, year);
+    const eventsInYear = getEventsInTargetYear(events, year);
+    return getEventsWithGridPositions(eventsInYear, startMonth, year);
 }
 
 /**

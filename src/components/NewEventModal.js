@@ -52,6 +52,8 @@ function NewEventModal(props) {
             name,
             start: startDate.format(EVENT_DATE_FORMAT),
             end: endDate.format(EVENT_DATE_FORMAT),
+            startObj: startDate,
+            endObj: endDate,
         });
 
         onClose();

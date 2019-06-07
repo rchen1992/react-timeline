@@ -1,8 +1,8 @@
-import timelineItems from '../timelineItems';
+import defaultEvents from './defaultEvents';
 
 export default {
     year: 2018,
     selectedDay: null,
-    events: timelineItems,
-    nextEventId: timelineItems.length + 1,
+    sortedEvents: defaultEvents,
+    nextEventId: defaultEvents.length + 1,
 };
