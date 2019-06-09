@@ -147,3 +147,30 @@ export function getJumpToDateScrollPosition(day, containerWidth) {
     // Subtract half the window width to center on the current day.
     return scrollLeft - window.innerWidth / 2;
 }
+
+/**
+ * Returns the index position of where to place a new event
+ * inside a sorted list of events, such that the list remains sorted
+ * by start date.
+ * @param targetEvent - event object
+ * @param sortedEvents - array of sorted event objects
+ */
+export function getSortedNewEventIndex(newEvent, sortedEvents) {
+    const eventIndex = sortedEvents.findIndex(event => newEvent.startObj.isBefore(event.startObj));
+
+    return eventIndex === -1 ? sortedEvents.length : eventIndex;
+}
+
+/**
+ * Returns a new array with target event removed.
+ * @param eventId - event ID of event to remove
+ * @param events - array of events
+ */
+export function getEventsWithEventRemoved(eventId, events) {
+    const eventIndex = events.findIndex(event => event.id === eventId);
+    if (eventIndex === -1) {
+        throw new Error(`Event with id: '${eventId}' could not be found.`);
+    }
+
+    return [...events.slice(0, eventIndex), ...events.slice(eventIndex + 1)];
+}

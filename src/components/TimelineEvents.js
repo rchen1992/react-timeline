@@ -7,7 +7,7 @@ function TimelineEvents(props) {
     const { year, sortedEvents } = React.useContext(StateContext);
     const eventsWithPositioning = prepareEvents(sortedEvents, props.startMonth, year);
     const eventItems = eventsWithPositioning.map(event => (
-        <TimelineEvent key={event.id} {...event} />
+        <TimelineEvent key={event.id} event={event} />
     ));
 
     return <>{eventItems}</>;
