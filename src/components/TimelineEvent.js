@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { StateContext } from 'store';
 
 const Cell = styled.div`
     grid-column-start: ${props => props.colStart};
@@ -29,14 +30,20 @@ const NameWrapper = styled.p`
 `;
 
 function TimelineEvent(props) {
+    const { colStart, colSpan, row, color, name } = props.event;
+    const { setEditEventOpen, setEditEvent } = React.useContext(StateContext);
+
+    /**
+     * Open edit event modal on click.
+     */
+    function onClick() {
+        setEditEvent(props.event);
+        setEditEventOpen(true);
+    }
+
     return (
-        <Cell
-            colStart={props.colStart}
-            colSpan={props.colSpan}
-            row={props.row}
-            eventColor={props.color}
-        >
-            <NameWrapper>{props.name}</NameWrapper>
+        <Cell colStart={colStart} colSpan={colSpan} row={row} eventColor={color} onClick={onClick}>
+            <NameWrapper>{name}</NameWrapper>
         </Cell>
     );
 }

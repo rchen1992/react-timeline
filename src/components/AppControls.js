@@ -19,6 +19,7 @@ const Container = styled.div`
 
 function AppControls(props) {
     const { year, setYear, setSelectedDay } = React.useContext(StateContext);
+
     function onDateChange(date) {
         if (date) {
             setYear(date.year());

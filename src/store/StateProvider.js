@@ -7,6 +7,8 @@ function StateProvider(props) {
     const [selectedDay, setSelectedDay] = React.useState(defaultState.selectedDay);
     const [sortedEvents, setSortedEvents] = React.useState(defaultState.sortedEvents);
     const [nextEventId, setNextEventId] = React.useState(defaultState.nextEventId);
+    const [editEventOpen, setEditEventOpen] = React.useState(defaultState.editEventOpen);
+    const [editEvent, setEditEvent] = React.useState(defaultState.editEvent);
 
     function onAddEvent(newEvent) {
         /**
@@ -41,6 +43,10 @@ function StateProvider(props) {
         setSelectedDay,
         sortedEvents,
         onAddEvent,
+        editEventOpen,
+        setEditEventOpen,
+        editEvent,
+        setEditEvent,
     };
 
     return <StateContext.Provider value={state}>{props.children}</StateContext.Provider>;

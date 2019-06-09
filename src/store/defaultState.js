@@ -6,4 +6,6 @@ export default {
     selectedDay: null,
     sortedEvents: defaultEvents,
     nextEventId: defaultEvents.length + 1,
+    editEventOpen: false,
+    editEvent: null,
 };

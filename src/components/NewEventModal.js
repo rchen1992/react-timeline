@@ -11,10 +11,10 @@ const { RangePicker } = DatePicker;
 const colors = Object.values(eventColors);
 
 function NewEventModal(props) {
-    const [color, setColor] = React.useState(colors[0]);
-    const [name, setName] = React.useState('');
-    const [startDate, setStartDate] = React.useState(null);
-    const [endDate, setEndDate] = React.useState(null);
+    const [color, setColor] = React.useState(props.color || colors[0]);
+    const [name, setName] = React.useState(props.name || '');
+    const [startDate, setStartDate] = React.useState(props.startDate || null);
+    const [endDate, setEndDate] = React.useState(props.endDate || null);
     const [submitted, setSubmitted] = React.useState(false);
 
     function onColorChange(color) {
@@ -31,10 +31,10 @@ function NewEventModal(props) {
     }
 
     function onClose() {
-        setColor(colors[0]);
-        setName('');
-        setStartDate(null);
-        setEndDate(null);
+        setColor(props.color || colors[0]);
+        setName(props.name || '');
+        setStartDate(props.startDate || null);
+        setEndDate(props.endDate || null);
         setSubmitted(false);
 
         props.onClose();
@@ -61,7 +61,7 @@ function NewEventModal(props) {
 
     return (
         <Modal
-            title="New Event"
+            title={props.editMode ? 'Edit Event' : 'New Event'}
             visible={props.open}
             onOk={onSubmit}
             onCancel={onClose}

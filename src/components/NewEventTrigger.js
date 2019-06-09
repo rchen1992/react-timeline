@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import NewEventModal from './NewEventModal';
 import { Button } from 'antd';
 import { StateContext } from 'store';
@@ -22,7 +21,7 @@ function NewEventTrigger(props) {
 
     return (
         <div>
-            <Button type="primary" icon="plus" onClick={onClick}>
+            <Button icon="plus" onClick={onClick}>
                 New Event
             </Button>
             <NewEventModal open={open} onClose={onClose} onSubmit={onSubmit} />
