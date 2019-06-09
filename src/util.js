@@ -147,3 +147,16 @@ export function getJumpToDateScrollPosition(day, containerWidth) {
     // Subtract half the window width to center on the current day.
     return scrollLeft - window.innerWidth / 2;
 }
+
+/**
+ * Returns the index position of where to place a new event
+ * inside a sorted list of events, such that the list remains sorted
+ * by start date.
+ * @param targetEvent - event object
+ * @param sortedEvents - array of sorted event objects
+ */
+export function getSortedNewEventIndex(newEvent, sortedEvents) {
+    const eventIndex = sortedEvents.findIndex(event => newEvent.startObj.isBefore(event.startObj));
+
+    return eventIndex === -1 ? sortedEvents.length : eventIndex;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import StateContext from './StateContext';
 import defaultState from './defaultState';
+import { getSortedNewEventIndex } from '../util';
 
 function StateProvider(props) {
     const [year, setYear] = React.useState(defaultState.year);
@@ -15,21 +16,16 @@ function StateProvider(props) {
          * Find where to insert the new event into
          * the sorted array of events.
          */
-        let newEventIndex = sortedEvents.findIndex(event =>
-            newEvent.startObj.isBefore(event.startObj)
-        );
-        if (newEventIndex === -1) {
-            newEventIndex = sortedEvents.length;
-        }
+        const newEventIndex = getSortedNewEventIndex(newEvent, sortedEvents);
 
         // Insert
         setSortedEvents(events => [
-            ...sortedEvents.slice(0, newEventIndex),
+            ...events.slice(0, newEventIndex),
             {
                 ...newEvent,
                 id: nextEventId,
             },
-            ...sortedEvents.slice(newEventIndex),
+            ...events.slice(newEventIndex),
         ]);
 
         // Increment next event ID
@@ -42,12 +38,21 @@ function StateProvider(props) {
             throw new Error(`Event with id: '${editedEvent.id}' could not be found.`);
         }
 
-        setSortedEvents(events => [
+        // First, remove the edited event.
+        const withoutEditedEvent = [
             ...sortedEvents.slice(0, editedEventIndex),
+            ...sortedEvents.slice(editedEventIndex + 1),
+        ];
+
+        // Find index of its new position, in case the start/end date has changed.
+        const newEventIndex = getSortedNewEventIndex(editedEvent, withoutEditedEvent);
+
+        setSortedEvents([
+            ...withoutEditedEvent.slice(0, newEventIndex),
             {
                 ...editedEvent,
             },
-            ...sortedEvents.slice(editedEventIndex + 1),
+            ...withoutEditedEvent.slice(newEventIndex),
         ]);
     }
 
