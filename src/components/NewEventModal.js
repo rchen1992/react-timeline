@@ -47,14 +47,20 @@ function NewEventModal(props) {
             return;
         }
 
-        props.onSubmit({
+        const payload = {
             color,
             name,
             start: startDate.format(EVENT_DATE_FORMAT),
             end: endDate.format(EVENT_DATE_FORMAT),
             startObj: startDate,
             endObj: endDate,
-        });
+        };
+
+        if (props.editMode) {
+            payload.id = props.id;
+        }
+
+        props.onSubmit(payload);
 
         onClose();
     }

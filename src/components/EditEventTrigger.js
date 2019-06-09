@@ -3,28 +3,42 @@ import NewEventModal from './NewEventModal';
 import { StateContext } from 'store';
 
 function EditEventTrigger(props) {
-    const { editEventOpen, setEditEventOpen, editEvent } = React.useContext(StateContext);
+    const {
+        editEventOpen,
+        setEditEventOpen,
+        editEvent,
+        setEditEvent,
+        onEditEvent,
+    } = React.useContext(StateContext);
 
     function onClose() {
         setEditEventOpen(false);
     }
 
     function onSubmit(event) {
-        console.log('submit edit');
+        onEditEvent(event);
+        setEditEvent(null);
     }
+
+    const eventProps = editEvent
+        ? {
+              id: editEvent.id,
+              name: editEvent.name,
+              color: editEvent.color,
+              startDate: editEvent.startObj,
+              endDate: editEvent.endObj,
+          }
+        : null;
 
     return (
         editEvent && (
             <NewEventModal
-                key={editEvent.id}
+                key={editEvent && editEvent.id}
                 editMode
-                name={editEvent.name}
-                color={editEvent.color}
-                startDate={editEvent.startObj}
-                endDate={editEvent.endObj}
                 open={editEventOpen}
                 onClose={onClose}
                 onSubmit={onSubmit}
+                {...eventProps}
             />
         )
     );

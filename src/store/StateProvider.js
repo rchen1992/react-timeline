@@ -36,6 +36,21 @@ function StateProvider(props) {
         setNextEventId(id => id + 1);
     }
 
+    function onEditEvent(editedEvent) {
+        const editedEventIndex = sortedEvents.findIndex(event => event.id === editedEvent.id);
+        if (editedEventIndex === -1) {
+            throw new Error(`Event with id: '${editedEvent.id}' could not be found.`);
+        }
+
+        setSortedEvents(events => [
+            ...sortedEvents.slice(0, editedEventIndex),
+            {
+                ...editedEvent,
+            },
+            ...sortedEvents.slice(editedEventIndex + 1),
+        ]);
+    }
+
     const state = {
         year,
         setYear,
@@ -47,6 +62,7 @@ function StateProvider(props) {
         setEditEventOpen,
         editEvent,
         setEditEvent,
+        onEditEvent,
     };
 
     return <StateContext.Provider value={state}>{props.children}</StateContext.Provider>;
