@@ -160,3 +160,17 @@ export function getSortedNewEventIndex(newEvent, sortedEvents) {
 
     return eventIndex === -1 ? sortedEvents.length : eventIndex;
 }
+
+/**
+ * Returns a new array with target event removed.
+ * @param eventId - event ID of event to remove
+ * @param events - array of events
+ */
+export function getEventsWithEventRemoved(eventId, events) {
+    const eventIndex = events.findIndex(event => event.id === eventId);
+    if (eventIndex === -1) {
+        throw new Error(`Event with id: '${eventId}' could not be found.`);
+    }
+
+    return [...events.slice(0, eventIndex), ...events.slice(eventIndex + 1)];
+}

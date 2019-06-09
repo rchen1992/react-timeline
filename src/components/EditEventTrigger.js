@@ -9,6 +9,7 @@ function EditEventTrigger(props) {
         editEvent,
         setEditEvent,
         onEditEvent,
+        onDeleteEvent,
     } = React.useContext(StateContext);
 
     function onClose() {
@@ -26,6 +27,11 @@ function EditEventTrigger(props) {
          * We don't do this for onClose because that would cause a re-render
          * that will cut short the close animation.
          */
+        setEditEvent(null);
+    }
+
+    function onDelete(eventId) {
+        onDeleteEvent(eventId);
         setEditEvent(null);
     }
 
@@ -47,6 +53,7 @@ function EditEventTrigger(props) {
                 open={editEventOpen}
                 onClose={onClose}
                 onSubmit={onSubmit}
+                onDelete={onDelete}
                 {...eventProps}
             />
         )

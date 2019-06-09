@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal, Input, DatePicker, Form } from 'antd';
+import { Modal, Input, DatePicker, Form, Button } from 'antd';
 import { CirclePicker } from 'react-color';
 import { EVENT_DATE_FORMAT } from 'config';
 import eventColors from 'style/eventColors';
@@ -9,6 +9,10 @@ const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
 const colors = Object.values(eventColors);
+
+const StyledDeleteButton = styled(Button)`
+    float: left;
+`;
 
 function NewEventModal(props) {
     const [color, setColor] = React.useState(props.color || colors[0]);
@@ -65,13 +69,39 @@ function NewEventModal(props) {
         onClose();
     }
 
+    function onDelete() {
+        if (props.onDelete) {
+            props.onDelete(props.id);
+        }
+
+        onClose();
+    }
+
+    let footerElements = [
+        <Button key="cancel" onClick={onClose}>
+            Cancel
+        </Button>,
+        <Button key="submit" type="primary" onClick={onSubmit}>
+            Submit
+        </Button>,
+    ];
+
+    if (props.editMode) {
+        footerElements = [
+            <StyledDeleteButton key="delete-event" type="danger" onClick={onDelete}>
+                Delete Event
+            </StyledDeleteButton>,
+            ...footerElements,
+        ];
+    }
+
     return (
         <Modal
             title={props.editMode ? 'Edit Event' : 'New Event'}
             visible={props.open}
             onOk={onSubmit}
             onCancel={onClose}
-            okText="Submit"
+            footer={footerElements}
         >
             <Form>
                 <Form.Item label="Event Name" validateStatus={submitted && !name ? 'error' : null}>

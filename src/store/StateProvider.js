@@ -1,7 +1,7 @@
 import React from 'react';
 import StateContext from './StateContext';
 import defaultState from './defaultState';
-import { getSortedNewEventIndex } from '../util';
+import { getSortedNewEventIndex, getEventsWithEventRemoved } from '../util';
 
 function StateProvider(props) {
     const [year, setYear] = React.useState(defaultState.year);
@@ -33,27 +33,21 @@ function StateProvider(props) {
     }
 
     function onEditEvent(editedEvent) {
-        const editedEventIndex = sortedEvents.findIndex(event => event.id === editedEvent.id);
-        if (editedEventIndex === -1) {
-            throw new Error(`Event with id: '${editedEvent.id}' could not be found.`);
-        }
-
         // First, remove the edited event.
-        const withoutEditedEvent = [
-            ...sortedEvents.slice(0, editedEventIndex),
-            ...sortedEvents.slice(editedEventIndex + 1),
-        ];
+        const withoutEditedEvent = getEventsWithEventRemoved(editedEvent.id, sortedEvents);
 
         // Find index of its new position, in case the start/end date has changed.
         const newEventIndex = getSortedNewEventIndex(editedEvent, withoutEditedEvent);
 
         setSortedEvents([
             ...withoutEditedEvent.slice(0, newEventIndex),
-            {
-                ...editedEvent,
-            },
+            editedEvent,
             ...withoutEditedEvent.slice(newEventIndex),
         ]);
+    }
+
+    function onDeleteEvent(eventId) {
+        setSortedEvents(events => getEventsWithEventRemoved(eventId, events));
     }
 
     const state = {
@@ -68,6 +62,7 @@ function StateProvider(props) {
         editEvent,
         setEditEvent,
         onEditEvent,
+        onDeleteEvent,
     };
 
     return <StateContext.Provider value={state}>{props.children}</StateContext.Provider>;
