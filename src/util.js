@@ -45,50 +45,34 @@ function eventDatesOverlap(a, b) {
  */
 function getEventsWithRowPositions(sortedEvents) {
     let result = [];
-    let rowCount = 1;
+    let addToRow = 1;
     let lastRowEvents = [];
 
     sortedEvents.forEach(event => {
         if (result.length > 0) {
-            const lastEvent = result[result.length - 1];
-
             /**
-             * If the current event overlaps the previous event,
-             * it should be placed one row further downwards.
+             * Starting with the first row,
+             * we need to look through all rows where we have previously
+             * placed an event to find the first available row.
+             * A row is available if the previous event doesn't overlap with the current event.
              */
-            if (eventDatesOverlap(lastEvent, event)) {
-                rowCount++;
-            } else {
-                /**
-                 * Otherwise, reset back to first row.
-                 *
-                 * From here, starting with the first row,
-                 * we need to look through all rows where we have previously
-                 * placed an event to find the first available row.
-                 * A row is available if the previous event's
-                 * end date does not surpass the current event's start date.
-                 */
-                rowCount = 1;
-                for (let i = 0; i < lastRowEvents.length; i++) {
-                    const lastRowEvent = lastRowEvents[i];
-                    console.log('event', event);
-                    console.log('lastRowEvent', lastRowEvent);
-                    if (lastRowEvent && lastRowEvent.endObj.unix() > event.startObj.unix()) {
-                        rowCount++;
-                    } else {
-                        break;
-                    }
+            let i = 0;
+            for (; i < lastRowEvents.length; i++) {
+                const lastRowEvent = lastRowEvents[i];
+                if (!eventDatesOverlap(lastRowEvent, event)) {
+                    break;
                 }
             }
+            addToRow = i + 1;
         }
 
         const eventWithPosition = {
             ...event,
-            row: rowCount,
+            row: addToRow,
         };
 
         result.push(eventWithPosition);
-        lastRowEvents[rowCount - 1] = eventWithPosition;
+        lastRowEvents[addToRow - 1] = eventWithPosition;
     });
 
     return result;
@@ -106,7 +90,7 @@ function getEventsWithColPositions(sortedEvents, startMonth, year) {
         return {
             ...event,
             colStart: event.startObj.diff(startDate, 'days') + 1,
-            colSpan: event.endObj.diff(event.startObj, 'days') + 1,
+            colSpan: event.endObj.diff(event.startObj, 'days'),
         };
     });
 }
