@@ -17,6 +17,15 @@ function EditEventTrigger(props) {
 
     function onSubmit(event) {
         onEditEvent(event);
+
+        /**
+         * We need to set the currently edited event back to null
+         * or else re-opening the modal for the same event after a submit
+         * will have stale data.
+         *
+         * We don't do this for onClose because that would cause a re-render
+         * that will cut short the close animation.
+         */
         setEditEvent(null);
     }
 
