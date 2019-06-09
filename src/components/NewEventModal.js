@@ -43,7 +43,7 @@ function NewEventModal(props) {
     function onSubmit() {
         setSubmitted(true);
 
-        if (!name || !startDate || !endDate) {
+        if (!name || !startDate || !endDate || startDate.isSame(endDate)) {
             return;
         }
 
@@ -73,7 +73,16 @@ function NewEventModal(props) {
                 </Form.Item>
                 <Form.Item
                     label="Event Dates"
-                    validateStatus={submitted && (!startDate || !endDate) ? 'error' : null}
+                    validateStatus={
+                        submitted && (!startDate || !endDate || startDate.isSame(endDate))
+                            ? 'error'
+                            : null
+                    }
+                    help={
+                        submitted && startDate && endDate && startDate.isSame(endDate)
+                            ? 'Event has to be at least one day long.'
+                            : null
+                    }
                 >
                     <RangePicker
                         style={{ width: '100%' }}
