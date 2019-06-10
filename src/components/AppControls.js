@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 import NewEventTrigger from './NewEventTrigger';
-import { DatePicker } from 'antd';
+import { DatePicker, Button } from 'antd';
 import { StateContext } from 'store';
 
 const Year = styled.span`
@@ -17,8 +17,21 @@ const Container = styled.div`
     width: 100%;
 `;
 
-function AppControls(props) {
-    const { year, setYear, setSelectedDay } = React.useContext(StateContext);
+const ZoomControls = styled.div`
+    display: inline-block;
+    margin-left: 10px;
+`;
+
+function AppControls() {
+    const {
+        year,
+        setYear,
+        setSelectedDay,
+        zoomIn,
+        zoomOut,
+        isZoomedInAtMax,
+        isZoomedOutAtMax,
+    } = React.useContext(StateContext);
 
     function onDateChange(date) {
         if (date) {
@@ -33,6 +46,10 @@ function AppControls(props) {
                 <div>
                     <Year>{year}</Year>
                     <DatePicker placeholder="Jump to date" onChange={onDateChange} />
+                    <ZoomControls>
+                        <Button icon="zoom-out" onClick={zoomOut} disabled={isZoomedOutAtMax} />
+                        <Button icon="zoom-in" onClick={zoomIn} disabled={isZoomedInAtMax} />
+                    </ZoomControls>
                 </div>
                 <NewEventTrigger />
             </Container>

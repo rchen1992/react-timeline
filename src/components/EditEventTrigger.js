@@ -2,7 +2,7 @@ import React from 'react';
 import NewEventModal from './NewEventModal';
 import { StateContext } from 'store';
 
-function EditEventTrigger(props) {
+function EditEventTrigger() {
     const {
         editEventOpen,
         setEditEventOpen,

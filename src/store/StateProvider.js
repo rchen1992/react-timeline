@@ -2,6 +2,7 @@ import React from 'react';
 import StateContext from './StateContext';
 import defaultState from './defaultState';
 import { getSortedNewEventIndex, getEventsWithEventRemoved } from '../util';
+import { ZOOM_LEVELS } from '../config';
 
 function StateProvider(props) {
     const [year, setYear] = React.useState(defaultState.year);
@@ -10,6 +11,11 @@ function StateProvider(props) {
     const [nextEventId, setNextEventId] = React.useState(defaultState.nextEventId);
     const [editEventOpen, setEditEventOpen] = React.useState(defaultState.editEventOpen);
     const [editEvent, setEditEvent] = React.useState(defaultState.editEvent);
+    const [zoomLevel, setZoomLevel] = React.useState(defaultState.zoomLevel);
+
+    const zoomLevelConfig = ZOOM_LEVELS[zoomLevel];
+    const isZoomedInAtMax = zoomLevel >= ZOOM_LEVELS.length - 1;
+    const isZoomedOutAtMax = zoomLevel <= 0;
 
     function onAddEvent(newEvent) {
         /**
@@ -50,6 +56,22 @@ function StateProvider(props) {
         setSortedEvents(events => getEventsWithEventRemoved(eventId, events));
     }
 
+    function zoomOut() {
+        if (zoomLevel <= 0) {
+            return;
+        }
+
+        setZoomLevel(level => level - 1);
+    }
+
+    function zoomIn() {
+        if (zoomLevel >= ZOOM_LEVELS.length - 1) {
+            return;
+        }
+
+        setZoomLevel(level => level + 1);
+    }
+
     const state = {
         year,
         setYear,
@@ -63,6 +85,12 @@ function StateProvider(props) {
         setEditEvent,
         onEditEvent,
         onDeleteEvent,
+        zoomLevel,
+        zoomLevelConfig,
+        zoomOut,
+        zoomIn,
+        isZoomedInAtMax,
+        isZoomedOutAtMax,
     };
 
     return <StateContext.Provider value={state}>{props.children}</StateContext.Provider>;
