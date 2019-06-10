@@ -7,11 +7,35 @@ export const MONTH_SPAN = 12;
 // The number of rows in the grid.
 export const GRID_NUM_ROWS = 12;
 
-// The number of days between each grid line.
-export const GRID_LINE_SPAN = 7;
-
 // Date format for events.
 export const EVENT_DATE_FORMAT = 'YYYY-MM-DD';
 
 // Date format for dates on the grid.
 export const GRID_DATE_DISPLAY_FORMAT = 'MMM D';
+
+export const ZOOM_LEVELS = [
+    {
+        monthsPerPage: 6,
+        gridLineSpan: 42,
+    },
+    {
+        monthsPerPage: 4,
+        gridLineSpan: 28,
+    },
+    {
+        monthsPerPage: 3,
+        gridLineSpan: 21,
+    },
+    {
+        monthsPerPage: 2,
+        gridLineSpan: 14,
+    },
+    {
+        monthsPerPage: 1,
+        gridLineSpan: 7,
+    },
+    {
+        monthsPerPage: 0.5,
+        gridLineSpan: 2,
+    },
+];

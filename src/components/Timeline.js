@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import TimelineEvents from './TimelineEvents';
 import GridLines from './GridLines';
 import { getNumberOfDaysInMonths, getJumpToDateScrollPosition } from '../util';
-import { GRID_LINE_SPAN, GRID_NUM_ROWS } from '../config';
+import { GRID_NUM_ROWS } from '../config';
 import { StateContext } from 'store';
 
 const ScrollContainer = styled.div`
@@ -15,8 +15,8 @@ const ScrollContainer = styled.div`
 
 const Grid = styled.div`
     display: grid;
-    width: ${props => `${props.monthSpan * 100}%`};
     height: 100%;
+    width: ${props => `${(12 / props.monthsPerPage) * 100}%`};
     grid-template-columns: ${props => `repeat(${props.numCols}, 1fr);`};
     grid-template-rows: ${props => `repeat(${props.numRows}, 1fr);`};
     grid-row-gap: 10px;
@@ -25,7 +25,7 @@ const Grid = styled.div`
 `;
 
 function Timeline(props) {
-    const { selectedDay } = React.useContext(StateContext);
+    const { selectedDay, zoomLevelConfig } = React.useContext(StateContext);
     const containerRef = React.useRef(null);
     const gridRef = React.useRef(null);
     const numCols = getNumberOfDaysInMonths(props.startMonth, props.monthSpan);
@@ -55,12 +55,13 @@ function Timeline(props) {
                 numCols={numCols}
                 numRows={GRID_NUM_ROWS}
                 monthSpan={props.monthSpan}
+                monthsPerPage={zoomLevelConfig.monthsPerPage}
             >
                 <TimelineEvents startMonth={props.startMonth} />
                 <GridLines
                     numCols={numCols}
                     numRows={GRID_NUM_ROWS}
-                    lineSpan={GRID_LINE_SPAN}
+                    lineSpan={zoomLevelConfig.gridLineSpan}
                     startMonth={props.startMonth}
                 />
             </Grid>

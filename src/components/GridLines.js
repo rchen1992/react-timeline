@@ -3,19 +3,33 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { GRID_DATE_DISPLAY_FORMAT } from '../config';
 
-const Line = styled.div`
+/**
+ * We have to set inline styles with `.attrs`
+ * since these values are dynamic (because of zoom),
+ * and at certain levels of zoom, it blows up the
+ * head tag with all the generated styles.
+ *
+ * More details here: https://github.com/styled-components/styled-components/issues/134
+ */
+const Line = styled.div.attrs(props => ({
+    style: {
+        gridColumnStart: props.colStart,
+        gridColumnEnd: `span ${props.lineSpan}`,
+        gridRowEnd: props.numRows,
+    },
+}))`
     border-right: 1px solid #dfdfdf;
-    grid-column-start: ${props => props.colStart};
-    grid-column-end: span ${props => props.lineSpan};
     grid-row-start: 1;
-    grid-row-end: ${props => props.numRows};
     z-index: -1;
 `;
 
-const Date = styled.div`
-    grid-column-start: ${props => props.colStart};
+const Date = styled.div.attrs(props => ({
+    style: {
+        gridColumnStart: props.colStart,
+        gridRowStart: props.numRows,
+    },
+}))`
     grid-column-end: span 2;
-    grid-row-start: ${props => props.numRows};
     grid-row-end: span 1;
     display: flex;
     align-items: center;
@@ -28,6 +42,7 @@ function GridLines(props) {
 
     let gridLines = [];
     let gridDates = [];
+
     /**
      * Calculate the position of each grid line and corresponding grid date.
      */

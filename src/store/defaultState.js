@@ -8,4 +8,5 @@ export default {
     nextEventId: defaultEvents.length + 1,
     editEventOpen: false,
     editEvent: null,
+    zoomLevel: 4,
 };
