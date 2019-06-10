@@ -13,13 +13,10 @@ const ScrollContainer = styled.div`
     white-space: nowrap;
 `;
 
-const Grid = styled.div.attrs(props => ({
-    style: {
-        width: `${(12 / props.monthsPerPage) * 100}%`,
-    },
-}))`
+const Grid = styled.div`
     display: grid;
     height: 100%;
+    width: ${props => `${(12 / props.monthsPerPage) * 100}%`};
     grid-template-columns: ${props => `repeat(${props.numCols}, 1fr);`};
     grid-template-rows: ${props => `repeat(${props.numRows}, 1fr);`};
     grid-row-gap: 10px;
