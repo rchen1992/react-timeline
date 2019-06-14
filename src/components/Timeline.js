@@ -22,6 +22,7 @@ const Grid = styled.div`
     grid-row-gap: 10px;
     padding: 10px;
     border-top: 1px solid #dfdfdf;
+    transition: width 0.3s;
 `;
 
 function Timeline(props) {
