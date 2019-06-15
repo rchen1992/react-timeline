@@ -39,17 +39,40 @@ function StateProvider(props) {
     }
 
     function onEditEvent(editedEvent) {
-        // First, remove the edited event.
-        const withoutEditedEvent = getEventsWithEventRemoved(editedEvent.id, sortedEvents);
+        const originalEventIndex = sortedEvents.findIndex(event => event.id === editedEvent.id);
+        if (originalEventIndex === -1) {
+            throw new Error(`Event with id: '${editedEvent.id}' could not be found.`);
+        }
 
-        // Find index of its new position, in case the start/end date has changed.
-        const newEventIndex = getSortedNewEventIndex(editedEvent, withoutEditedEvent);
+        const originalEvent = sortedEvents[originalEventIndex];
 
-        setSortedEvents([
-            ...withoutEditedEvent.slice(0, newEventIndex),
-            editedEvent,
-            ...withoutEditedEvent.slice(newEventIndex),
-        ]);
+        /**
+         * If the start and end date didn't change, we don't have to re-sort the events.
+         * Simply replace the existing event with the edited event.
+         */
+        if (
+            originalEvent.startObj.isSame(editedEvent.startObj) &&
+            originalEvent.endObj.isSame(editedEvent.endObj)
+        ) {
+            setSortedEvents([
+                ...sortedEvents.slice(0, originalEventIndex),
+                editedEvent,
+                ...sortedEvents.slice(originalEventIndex + 1),
+            ]);
+        } else {
+            // Otherwise, we need to remove the event and place it in its new place in the sorted array.
+            // First, remove the edited event.
+            const withoutEditedEvent = getEventsWithEventRemoved(editedEvent.id, sortedEvents);
+
+            // Find index of its new position, since the start/end date has changed.
+            const newEventIndex = getSortedNewEventIndex(editedEvent, withoutEditedEvent);
+
+            setSortedEvents([
+                ...withoutEditedEvent.slice(0, newEventIndex),
+                editedEvent,
+                ...withoutEditedEvent.slice(newEventIndex),
+            ]);
+        }
     }
 
     function onDeleteEvent(eventId) {
