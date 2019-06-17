@@ -13,6 +13,11 @@ export const EVENT_DATE_FORMAT = 'YYYY-MM-DD';
 // Date format for dates on the grid.
 export const GRID_DATE_DISPLAY_FORMAT = 'MMM D';
 
+/**
+ * The different configurations of zoom.
+ * @param monthsPerPage - number of months to fit in the viewport at one time, without scrolling
+ * @param gridLineSpan - number of days between each grid date/line
+ */
 export const ZOOM_LEVELS = [
     {
         monthsPerPage: 6,
