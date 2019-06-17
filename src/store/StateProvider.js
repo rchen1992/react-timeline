@@ -3,6 +3,7 @@ import StateContext from './StateContext';
 import defaultState from './defaultState';
 import { getSortedNewEventIndex, getEventsWithEventRemoved } from '../util';
 import { ZOOM_LEVELS } from '../config';
+import { saveEvents, saveNextEventId } from './persistence';
 
 function StateProvider(props) {
     const [year, setYear] = React.useState(defaultState.year);
@@ -25,17 +26,31 @@ function StateProvider(props) {
         const newEventIndex = getSortedNewEventIndex(newEvent, sortedEvents);
 
         // Insert
-        setSortedEvents(events => [
-            ...events.slice(0, newEventIndex),
-            {
-                ...newEvent,
-                id: nextEventId,
-            },
-            ...events.slice(newEventIndex),
-        ]);
+        setSortedEvents(events => {
+            const updatedEvents = [
+                ...events.slice(0, newEventIndex),
+                {
+                    ...newEvent,
+                    id: nextEventId,
+                },
+                ...events.slice(newEventIndex),
+            ];
+
+            // Persist events
+            saveEvents(updatedEvents);
+
+            return updatedEvents;
+        });
 
         // Increment next event ID
-        setNextEventId(id => id + 1);
+        setNextEventId(id => {
+            const newId = id + 1;
+
+            // Persist id
+            saveNextEventId(newId);
+
+            return newId;
+        });
     }
 
     function onEditEvent(editedEvent) {
@@ -50,15 +65,16 @@ function StateProvider(props) {
          * If the start and end date didn't change, we don't have to re-sort the events.
          * Simply replace the existing event with the edited event.
          */
+        let updatedEvents;
         if (
             originalEvent.startObj.isSame(editedEvent.startObj) &&
             originalEvent.endObj.isSame(editedEvent.endObj)
         ) {
-            setSortedEvents([
+            updatedEvents = [
                 ...sortedEvents.slice(0, originalEventIndex),
                 editedEvent,
                 ...sortedEvents.slice(originalEventIndex + 1),
-            ]);
+            ];
         } else {
             // Otherwise, we need to remove the event and place it in its new place in the sorted array.
             // First, remove the edited event.
@@ -67,16 +83,28 @@ function StateProvider(props) {
             // Find index of its new position, since the start/end date has changed.
             const newEventIndex = getSortedNewEventIndex(editedEvent, withoutEditedEvent);
 
-            setSortedEvents([
+            updatedEvents = [
                 ...withoutEditedEvent.slice(0, newEventIndex),
                 editedEvent,
                 ...withoutEditedEvent.slice(newEventIndex),
-            ]);
+            ];
         }
+
+        setSortedEvents(updatedEvents);
+
+        // Persist changes
+        saveEvents(updatedEvents);
     }
 
     function onDeleteEvent(eventId) {
-        setSortedEvents(events => getEventsWithEventRemoved(eventId, events));
+        setSortedEvents(events => {
+            const updatedEvents = getEventsWithEventRemoved(eventId, events);
+
+            // Persist changes
+            saveEvents(updatedEvents);
+
+            return updatedEvents;
+        });
     }
 
     function zoomOut() {
